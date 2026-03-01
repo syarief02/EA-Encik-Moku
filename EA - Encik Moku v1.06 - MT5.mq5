@@ -157,11 +157,20 @@ double GetIchimoku(int tfIdx, int buffer, int shift)
    return val[0];
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 double GetTenkan(int tfIdx, int shift)    { return GetIchimoku(tfIdx, 0, shift); }
 double GetKijun(int tfIdx, int shift)     { return GetIchimoku(tfIdx, 1, shift); }
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 double GetSenkouA(int tfIdx, int shift)   { return GetIchimoku(tfIdx, 2, shift); }
 double GetSenkouB(int tfIdx, int shift)   { return GetIchimoku(tfIdx, 3, shift); }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 double GetStochMain(int tfIdx, int shift)
   {
    double val[];
@@ -171,6 +180,9 @@ double GetStochMain(int tfIdx, int shift)
    return val[0];
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 double GetStochSignal(int tfIdx, int shift)
   {
    double val[];
@@ -180,6 +192,9 @@ double GetStochSignal(int tfIdx, int shift)
    return val[0];
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 double GetRSI(int tfIdx, int shift)
   {
    double val[];
@@ -189,6 +204,9 @@ double GetRSI(int tfIdx, int shift)
    return val[0];
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 int TFIndex(ENUM_TIMEFRAMES tf)
   {
    for(int i = 0; i < 7; i++)
@@ -212,15 +230,15 @@ bool IsBullishTF(ENUM_TIMEFRAMES tf)
    double stochMain   = GetStochMain(idx, 0);
    double stochSignal = GetStochSignal(idx, 0);
 
-   // Ichimoku: Tenkan above Kumo and above Kijun
+// Ichimoku: Tenkan above Kumo and above Kijun
    if(!(tenkan > senkouA && tenkan > senkouB && tenkan > kijun))
       return false;
 
-   // RSI < 70
+// RSI < 70
    if(rsi >= 70)
       return false;
 
-   // Stochastic: main < 80 AND main > signal
+// Stochastic: main < 80 AND main > signal
    if(stochMain >= 80 || stochMain <= stochSignal)
       return false;
 
@@ -340,36 +358,78 @@ void OnEveryTick()
    ENUM_TIMEFRAMES currentPeriod = (ENUM_TIMEFRAMES)Period();
    switch(currentPeriod)
      {
-      case PERIOD_M1:  CTF = "M1";  break;
-      case PERIOD_M5:  CTF = "M5";  break;
-      case PERIOD_M15: CTF = "M15"; break;
-      case PERIOD_M30: CTF = "M30"; break;
-      case PERIOD_H1:  CTF = "H1";  break;
-      case PERIOD_H4:  CTF = "H4";  break;
-      case PERIOD_D1:  CTF = "D1";  break;
-      case PERIOD_W1:  CTF = "W1";  break;
-      case PERIOD_MN1: CTF = "MN";  break;
-      default:         CTF = "??";  break;
+      case PERIOD_M1:
+         CTF = "M1";
+         break;
+      case PERIOD_M5:
+         CTF = "M5";
+         break;
+      case PERIOD_M15:
+         CTF = "M15";
+         break;
+      case PERIOD_M30:
+         CTF = "M30";
+         break;
+      case PERIOD_H1:
+         CTF = "H1";
+         break;
+      case PERIOD_H4:
+         CTF = "H4";
+         break;
+      case PERIOD_D1:
+         CTF = "D1";
+         break;
+      case PERIOD_W1:
+         CTF = "W1";
+         break;
+      case PERIOD_MN1:
+         CTF = "MN";
+         break;
+      default:
+         CTF = "??";
+         break;
      }
 
    double equity = AccountInfoDouble(ACCOUNT_EQUITY);
    switch(AutoCompounding_Mode)
      {
-      case A: EntryLots = Lots; break;
-      case B: EntryLots = NormalizeDouble(Lots / 50.0 * equity, 2); break;
-      case C: EntryLots = NormalizeDouble(Lots / 100.0 * equity, 2); break;
-      case D: EntryLots = NormalizeDouble(Lots / 1000.0 * equity, 2); break;
-      case E: EntryLots = NormalizeDouble(Lots / 10000.0 * equity, 2); break;
-      case F: EntryLots = NormalizeDouble(Lots / 100000.0 * equity, 2); break;
+      case A:
+         EntryLots = Lots;
+         break;
+      case B:
+         EntryLots = NormalizeDouble(Lots / 50.0 * equity, 2);
+         break;
+      case C:
+         EntryLots = NormalizeDouble(Lots / 100.0 * equity, 2);
+         break;
+      case D:
+         EntryLots = NormalizeDouble(Lots / 1000.0 * equity, 2);
+         break;
+      case E:
+         EntryLots = NormalizeDouble(Lots / 10000.0 * equity, 2);
+         break;
+      case F:
+         EntryLots = NormalizeDouble(Lots / 100000.0 * equity, 2);
+         break;
      }
 
    switch(MultiTimeFrame_Mode)
      {
-      case AA: TMode = "No MTF (" + CTF + ")"; break;
-      case BB: TMode = "Scalperz (H1>M15>M5>M1)"; break;
-      case CC: TMode = "Intradayz (H4>H1>M15>M5)"; break;
-      case DD: TMode = "Swingz (D1>H4>H1>M15)"; break;
-      case EE: TMode = "Positionz (W1>D1>H4>H1)"; break;
+      case AA:
+         TMode = "No MTF (" + CTF + ")";
+         break;
+      case BB:
+         TMode = "Scalperz (H1>M15>M5>M1)";
+         break;
+      case CC:
+         TMode = "Intradayz (H4>H1>M15>M5)";
+         break;
+      case DD:
+         TMode = "Swingz (D1>H4>H1>M15)";
+         break;
+      case EE:
+         TMode = "Positionz (W1>D1>H4>H1)";
+         break;
      }
 
    ExpiryCheck();
@@ -382,18 +442,21 @@ void OnEveryTick()
       (Thursday && dow == 4) || (Friday && dow == 5) || (Saturday && dow == 6) || (Sunday && dow == 0))
       dayAllowed = true;
 
-   if(!dayAllowed) return;
+   if(!dayAllowed)
+      return;
 
    int hour0 = dt.hour;
    bool hourAllowed = false;
    if(HoursFrom < HoursTo)
       hourAllowed = (hour0 >= HoursFrom && hour0 < HoursTo);
-   else if(HoursFrom > HoursTo)
-      hourAllowed = (hour0 < HoursTo || hour0 >= HoursFrom);
    else
-      hourAllowed = true;
+      if(HoursFrom > HoursTo)
+         hourAllowed = (hour0 < HoursTo || hour0 >= HoursFrom);
+      else
+         hourAllowed = true;
 
-   if(!hourAllowed) return;
+   if(!hourAllowed)
+      return;
 
    CheckBuySignal();
    CheckSellSignal();
@@ -416,6 +479,9 @@ void ExpiryCheck()
      }
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 bool IsDemo()
   {
    return (AccountInfoInteger(ACCOUNT_TRADE_MODE) == ACCOUNT_TRADE_MODE_DEMO);
@@ -543,6 +609,9 @@ bool BuyExists()
    return false;
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 bool SellExists()
   {
    for(int i = PositionsTotal() - 1; i >= 0; i--)
@@ -552,6 +621,9 @@ bool SellExists()
    return false;
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 int CountBuy()
   {
    int k = 0;
@@ -562,6 +634,9 @@ int CountBuy()
    return k;
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 int CountSell()
   {
    int k = 0;
@@ -572,6 +647,9 @@ int CountSell()
    return k;
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 void CloseSellPositions()
   {
    for(int i = PositionsTotal() - 1; i >= 0; i--)
@@ -580,6 +658,9 @@ void CloseSellPositions()
             trade.PositionClose(posInfo.Ticket());
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 void CloseBuyPositions()
   {
    for(int i = PositionsTotal() - 1; i >= 0; i--)
@@ -603,12 +684,16 @@ double GetLastDealProfit(double &lastLots)
    for(int i = total - 1; i >= 0; i--)
      {
       ulong ticket = HistoryDealGetTicket(i);
-      if(ticket == 0) continue;
-      if(HistoryDealGetString(ticket, DEAL_SYMBOL) != _Symbol) continue;
-      if(HistoryDealGetInteger(ticket, DEAL_MAGIC) != MagicNumber) continue;
+      if(ticket == 0)
+         continue;
+      if(HistoryDealGetString(ticket, DEAL_SYMBOL) != _Symbol)
+         continue;
+      if(HistoryDealGetInteger(ticket, DEAL_MAGIC) != MagicNumber)
+         continue;
 
       long dealEntry = HistoryDealGetInteger(ticket, DEAL_ENTRY);
-      if(dealEntry != DEAL_ENTRY_OUT && dealEntry != DEAL_ENTRY_INOUT) continue;
+      if(dealEntry != DEAL_ENTRY_OUT && dealEntry != DEAL_ENTRY_INOUT)
+         continue;
 
       datetime dealTime = (datetime)HistoryDealGetInteger(ticket, DEAL_TIME);
       if(dealTime > lastTime)
@@ -633,28 +718,35 @@ void BuyOrderWithMgm()
    if(profit > 0)
      {
       CurrentBuyLots = CurrentBuyLots * LotsMultiplierOnProfit;
-      if(LotsResetOnProfit) CurrentBuyLots = Lots;
+      if(LotsResetOnProfit)
+         CurrentBuyLots = Lots;
      }
    else
       if(profit < 0)
         {
          CurrentBuyLots = CurrentBuyLots * LotMultiplierOnLoss;
-         if(LotsResetOnLoss) CurrentBuyLots = Lots;
+         if(LotsResetOnLoss)
+            CurrentBuyLots = Lots;
         }
 
-   if(CurrentBuyLots > MaxLots) CurrentBuyLots = MaxLots;
+   if(CurrentBuyLots > MaxLots)
+      CurrentBuyLots = MaxLots;
 
    double lotvalue = NormalizeDouble(CurrentBuyLots, 2);
    double minLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
    double maxLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
-   if(lotvalue < minLot) lotvalue = minLot;
-   if(lotvalue > maxLot) lotvalue = maxLot;
+   if(lotvalue < minLot)
+      lotvalue = minLot;
+   if(lotvalue > maxLot)
+      lotvalue = maxLot;
 
    double ask = SymbolInfoDouble(_Symbol, SYMBOL_ASK);
    double SL = ask - Stoploss_Pips * PipValue * _Point;
-   if(Stoploss_Pips == 0) SL = 0;
+   if(Stoploss_Pips == 0)
+      SL = 0;
    double TP = ask + Takeprofit_Pips * PipValue * _Point;
-   if(Takeprofit_Pips == 0) TP = 0;
+   if(Takeprofit_Pips == 0)
+      TP = 0;
    SL = NormalizeDouble(SL, _Digits);
    TP = NormalizeDouble(TP, _Digits);
 
@@ -666,7 +758,8 @@ void BuyOrderWithMgm()
          if(posTicket > 0 && (SL != 0 || TP != 0))
            { Sleep(500); trade.PositionModify(posTicket, SL, TP); }
         }
-      else Print("Buy error: ", trade.ResultRetcodeDescription());
+      else
+         Print("Buy error: ", trade.ResultRetcodeDescription());
      }
    else
      {
@@ -687,28 +780,35 @@ void SellOrderWithMgm()
    if(profit > 0)
      {
       CurrentSellLots = CurrentSellLots * LotsMultiplierOnProfit;
-      if(LotsResetOnProfit) CurrentSellLots = Lots;
+      if(LotsResetOnProfit)
+         CurrentSellLots = Lots;
      }
    else
       if(profit < 0)
         {
          CurrentSellLots = CurrentSellLots * LotMultiplierOnLoss;
-         if(LotsResetOnLoss) CurrentSellLots = Lots;
+         if(LotsResetOnLoss)
+            CurrentSellLots = Lots;
         }
 
-   if(CurrentSellLots > MaxLots) CurrentSellLots = MaxLots;
+   if(CurrentSellLots > MaxLots)
+      CurrentSellLots = MaxLots;
 
    double lotvalue = NormalizeDouble(CurrentSellLots, 2);
    double minLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MIN);
    double maxLot = SymbolInfoDouble(_Symbol, SYMBOL_VOLUME_MAX);
-   if(lotvalue < minLot) lotvalue = minLot;
-   if(lotvalue > maxLot) lotvalue = maxLot;
+   if(lotvalue < minLot)
+      lotvalue = minLot;
+   if(lotvalue > maxLot)
+      lotvalue = maxLot;
 
    double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
    double SL = bid + Stoploss_Pips * PipValue * _Point;
-   if(Stoploss_Pips == 0) SL = 0;
+   if(Stoploss_Pips == 0)
+      SL = 0;
    double TP = bid - Takeprofit_Pips * PipValue * _Point;
-   if(Takeprofit_Pips == 0) TP = 0;
+   if(Takeprofit_Pips == 0)
+      TP = 0;
    SL = NormalizeDouble(SL, _Digits);
    TP = NormalizeDouble(TP, _Digits);
 
@@ -720,7 +820,8 @@ void SellOrderWithMgm()
          if(posTicket > 0 && (SL != 0 || TP != 0))
            { Sleep(500); trade.PositionModify(posTicket, SL, TP); }
         }
-      else Print("Sell error: ", trade.ResultRetcodeDescription());
+      else
+         Print("Sell error: ", trade.ResultRetcodeDescription());
      }
    else
      {
@@ -738,11 +839,17 @@ void SendBuyNotification()
    string msg = ExpertComment + ". " + _Symbol + ". Buy Signal. Price: " + DoubleToString(ask, _Digits)
                 + ". TP: " + DoubleToString(TP, _Digits) + ". SL: " + DoubleToString(SL, _Digits)
                 + ". MTF Mode: " + TMode;
-   if(Email_Notification) SendMail(ExpertComment, msg);
-   if(Alert_Notification) Alert(msg);
-   if(MT5_Messages) SendNotification(msg);
+   if(Email_Notification)
+      SendMail(ExpertComment, msg);
+   if(Alert_Notification)
+      Alert(msg);
+   if(MT5_Messages)
+      SendNotification(msg);
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 void SendSellNotification()
   {
    double bid = SymbolInfoDouble(_Symbol, SYMBOL_BID);
@@ -751,9 +858,12 @@ void SendSellNotification()
    string msg = ExpertComment + ". " + _Symbol + ". Sell Signal. Price: " + DoubleToString(bid, _Digits)
                 + ". TP: " + DoubleToString(TP, _Digits) + ". SL: " + DoubleToString(SL, _Digits)
                 + ". MTF Mode: " + TMode;
-   if(Email_Notification) SendMail(ExpertComment, msg);
-   if(Alert_Notification) Alert(msg);
-   if(MT5_Messages) SendNotification(msg);
+   if(Email_Notification)
+      SendMail(ExpertComment, msg);
+   if(Alert_Notification)
+      Alert(msg);
+   if(MT5_Messages)
+      SendNotification(msg);
   }
 
 //+------------------------------------------------------------------+
@@ -766,8 +876,10 @@ void DoTrailingStop()
 
    for(int i = PositionsTotal() - 1; i >= 0; i--)
      {
-      if(!posInfo.SelectByIndex(i)) continue;
-      if(posInfo.Symbol() != _Symbol || posInfo.Magic() != MagicNumber) continue;
+      if(!posInfo.SelectByIndex(i))
+         continue;
+      if(posInfo.Symbol() != _Symbol || posInfo.Magic() != MagicNumber)
+         continue;
 
       double openPrice = posInfo.PriceOpen();
       double sl = posInfo.StopLoss();
@@ -856,17 +968,34 @@ bool isAuthorized()
    return false;
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 int RunAuthorization()
   {
-   if(IsDemo()) { Print("Demo account detected, skipping authorization"); return(INIT_SUCCEEDED); }
+   if(IsDemo())
+     {
+      Print("Demo account detected, skipping authorization");
+      return(INIT_SUCCEEDED);
+     }
    if(TimeCurrent() > expDate)
      {
-      if(isAuthorized()) return(INIT_SUCCEEDED);
-      else { Alert(ExpiryAlert); ExpertRemove(); Comment("\n" + ExpiryAlert); return(INIT_FAILED); }
+      if(isAuthorized())
+         return(INIT_SUCCEEDED);
+      else
+        {
+         Alert(ExpiryAlert);
+         ExpertRemove();
+         Comment("\n" + ExpiryAlert);
+         return(INIT_FAILED);
+        }
      }
    return(INIT_SUCCEEDED);
   }
 
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
 string AuthMessage()
   {
    long accNum = AccountInfoInteger(ACCOUNT_LOGIN);
