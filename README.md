@@ -166,4 +166,4 @@ The EA supports **5 Multi-Timeframe (MTF) modes** that require all 4 configured 
 
 ---
 
-**Open Source · Free to Use · Expires 2026-03-28 · By Syarief Azman**
+**Open Source · Free to Use · Expires 2026-09-30 · By Syarief Azman**
